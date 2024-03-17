@@ -12,6 +12,7 @@ function CameraScreen() {
   const [ image, setImage ] = useState(null)
   const cameraRef = useRef(null)
 
+
   useEffect(() => {(
     async () => {
       await requestPermission()
@@ -28,7 +29,6 @@ function CameraScreen() {
     if (cameraRef) {
       try {
         const data = await cameraRef.current.takePictureAsync()
-        console.log(data)
         setImage(data.uri)
       } catch(e) {
         console.log(e)
@@ -41,11 +41,11 @@ function CameraScreen() {
   }
 
   function scanImage() {
-    alert('Scanning Image.....')
+    alert('Scanning Image.....')  
   }
 
 
-  if (permission.status === 'denied') {
+  if (!permission?.granted) {
     return (
       <>
         <View style={{
