@@ -12,7 +12,6 @@ function CameraScreen() {
   const [ image, setImage ] = useState(null)
   const cameraRef = useRef(null)
 
-  // console.log(permission.granted)
 
   useEffect(() => {(
     async () => {
@@ -42,7 +41,7 @@ function CameraScreen() {
   }
 
   function scanImage() {
-    alert('Scanning Image.....')
+    alert('Scanning Image.....')  
   }
 
 
