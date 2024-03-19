@@ -1,17 +1,23 @@
-import { Platform, StyleSheet, Text, View, StatusBar } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import Login from "./pages/login";
-import Profile from "./components/Profile";
-import Navigation from "./components/navigation";
 import Home from "./pages/home";
+import CameraScreen from "./pages/camera";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Chatbot from "./pages/Chatbot";
+
+const stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Profile />
-      <Home />
-      <Navigation />
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <stack.Navigator>
+        <stack.Screen name="login" component={Login}></stack.Screen>
+        <stack.Screen name="home" component={Home}></stack.Screen>
+        <stack.Screen name="camera" component={CameraScreen}></stack.Screen>
+        <stack.Screen name="Chat" component={Chatbot} />
+      </stack.Navigator>
+    </NavigationContainer>
   );
 }
 

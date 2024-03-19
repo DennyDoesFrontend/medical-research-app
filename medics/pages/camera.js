@@ -1,114 +1,129 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import { Camera } from 'expo-camera'
-import { StatusBar } from 'expo-status-bar'
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import { Camera } from "expo-camera";
+import { StatusBar } from "expo-status-bar";
 
-import { CaptureButton, FlashButton, ImagePreview} from '../components/Camera'
-import Navigation from '../components/navigation'
+import { CaptureButton, FlashButton, ImagePreview } from "../components/Camera";
+import Navigation from "../components/navigation";
 
 function CameraScreen() {
-  const [ permission, requestPermission ] = Camera.useCameraPermissions()
-  const [ flash, setFlash ] = useState(Camera.Constants.FlashMode.off)
-  const [ image, setImage ] = useState(null)
-  const cameraRef = useRef(null)
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
+  const [image, setImage] = useState(null);
+  const cameraRef = useRef(null);
 
-
-  useEffect(() => {(
-    async () => {
-      await requestPermission()
-    }
-  )()}, [])
+  useEffect(() => {
+    (async () => {
+      await requestPermission();
+    })();
+  }, []);
 
   function toggleFlash() {
-    setFlash((current) => (current === Camera.Constants.FlashMode.off 
-      ? Camera.Constants.FlashMode.on 
-      : Camera.Constants.FlashMode.off))
+    setFlash((current) =>
+      current === Camera.Constants.FlashMode.off
+        ? Camera.Constants.FlashMode.on
+        : Camera.Constants.FlashMode.off
+    );
   }
 
   async function takePicture() {
     if (cameraRef) {
       try {
-        const data = await cameraRef.current.takePictureAsync()
-        setImage(data.uri)
-      } catch(e) {
-        console.log(e)
+        const data = await cameraRef.current.takePictureAsync();
+        setImage(data.uri);
+      } catch (e) {
+        console.log(e);
       }
     }
   }
 
   function retakePicture() {
-    setImage(null)
+    setImage(null);
   }
 
   function scanImage() {
-    alert('Scanning Image.....')  
+    alert("Scanning Image.....");
   }
-
 
   if (!permission?.granted) {
     return (
       <>
-        <View style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Text>Permission is required. Allow Permission from Settings</Text>
         </View>
         <View>
-          <Navigation/>
+          <Navigation />
         </View>
       </>
-    )
+    );
   }
 
   return (
     <>
       <View style={styles.container}>
-        <StatusBar style='light' />
-        {!image ?
+        <StatusBar style="light" />
+        {!image ? (
           <>
             <View style={styles.cameraContainer}>
-              <Camera style={styles.camera} ref={cameraRef} ratio='16:9' autoFocus='on' flashMode={flash}/>
+              <Camera
+                style={styles.camera}
+                ref={cameraRef}
+                ratio="16:9"
+                autoFocus="on"
+                flashMode={flash}
+              />
             </View>
-            <FlashButton flashActive={flash} style={styles.flashButton} handleFlashPress={toggleFlash}/>
-            <CaptureButton onPress={takePicture} style={styles.captureButton}/>
+            <FlashButton
+              flashActive={flash}
+              style={styles.flashButton}
+              handleFlashPress={toggleFlash}
+            />
+            <CaptureButton onPress={takePicture} style={styles.captureButton} />
           </>
-        :
-          <ImagePreview style={styles.camera} image={image} onRetakePress={retakePicture} onScanPress={scanImage}/>
-        }
+        ) : (
+          <ImagePreview
+            style={styles.camera}
+            image={image}
+            onRetakePress={retakePicture}
+            onScanPress={scanImage}
+          />
+        )}
       </View>
-      <View>
-        <Navigation/>
-      </View>
+      <Navigation />
     </>
-  )
+  );
 }
 
-export default CameraScreen
+export default CameraScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    backgroundColor: '#000',
+    flex: 1,
+    backgroundColor: "#000",
     paddingVertical: 40,
   },
   captureButton: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 65,
-    alignSelf: 'center'
+    alignSelf: "center",
   },
   camera: {
     flex: 1,
   },
   cameraContainer: {
-    flex: 1,
+    flex: 0.8,
     borderRadius: 25,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   flashButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 70,
-    right: 25
-  }
-})
+    right: 25,
+  },
+});

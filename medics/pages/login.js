@@ -1,7 +1,9 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 function Login() {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Image
@@ -14,7 +16,14 @@ function Login() {
           <Text style={styles.login}>Login/Sign up</Text>
           <View style={styles.loginContainer}>
             <Image source={require("../assets/images/google.png")}></Image>
-            <Text style={styles.button}>Continue With Google</Text>
+            <TouchableOpacity>
+              <Text
+                style={styles.button}
+                onPress={() => navigation.navigate("home")}
+              >
+                Continue With Google
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
