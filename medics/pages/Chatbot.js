@@ -9,38 +9,35 @@ import {
   StyleSheet,
 } from "react-native";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import ChatBubble from "../src/Chatbubble";
 
 const Chatbot = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [chat, setChat] = useState(null); // State variable to store the chat instance
-  const API_KEY = "AIzaSyDCAVSpcvM75-s__HJEprLcroXV2KCpcTU"; // Replace 'YOUR_API_KEY' with your actual API key
+  const [chat, setChat] = useState(null);
+  const API_KEY = "AIzaSyDCAVSpcvM75-s__HJEprLcroXV2KCpcTU";
 
   useEffect(() => {
-    // Initialize the GoogleGenerativeAI instance with your API key
+    // Initialize the GoogleGenerativeAI instance
     const genAI = new GoogleGenerativeAI(API_KEY);
 
-    // Start the chat when component mounts
     startChat(genAI);
   }, []);
 
   const startChat = async (genAI) => {
     try {
-      // For text-only input, use the gemini-pro model
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
       // Start a new chat session
       const chatInstance = model.startChat({
         history: [
-          // Initial user message
+          // Initial user message here
           {
             role: "user",
-            parts: [{ text: "Hello, I have 2 dogs in my house." }],
+            parts: [{ text: "Hello" }],
           },
-          // Initial model response
+          // Initial model response here
           {
             role: "model",
             parts: [
@@ -53,7 +50,7 @@ const Chatbot = () => {
         },
       });
 
-      // Save the chat instance to state
+      // Save the chat instance to state here
       setChat(chatInstance);
     } catch (error) {
       console.error("Error starting chat:", error);
@@ -65,7 +62,7 @@ const Chatbot = () => {
     try {
       setLoading(true);
 
-      // Send user message with a timeout
+      // Send user message with a timeout, Reply 'Timeout...' when model doesn't respond
       const result = await Promise.race([
         chat.sendMessage(message),
         new Promise(
@@ -73,7 +70,7 @@ const Chatbot = () => {
             setTimeout(
               () => reject(new Error("Timeout while waiting for response")),
               10000
-            ) // 10-second timeout
+            ) // 10-second timeout here XD
         ),
       ]);
 
