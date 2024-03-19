@@ -43,15 +43,16 @@ const styles = StyleSheet.create({
     borderColor: "#ccc", // Border color
     position: "absolute",
     bottom: 0,
+    right: 0,
+    left: 0, // Adjust to fill the entire width
     alignItems: "center",
-    gap: 5,
+    paddingHorizontal: 20, // Add horizontal padding to adjust spacing
   },
   iconContainer: {
     alignItems: "center",
     justifyContent: "center",
     height: "100%",
     flex: 1,
-    // Adjust the padding to increase the clickable area
   },
 });
 

@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import Navigation from "../components/navigation";
 
 const Chatbot = () => {
   const [chatHistory, setChatHistory] = useState([]);
