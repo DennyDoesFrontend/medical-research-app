@@ -3,8 +3,16 @@ import { Feather } from "@expo/vector-icons";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
-function Navigation(props) {
+function Navigation() {
   const navigation = useNavigation();
+
+  const handleReset = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "camera" }],
+    });
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -14,7 +22,7 @@ function Navigation(props) {
         <Feather name="home" size={24} color="black" />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("camera")}
+        onPress={handleReset}
         style={styles.iconContainer}
       >
         <Feather name="camera" size={24} color="black" />

@@ -16,7 +16,7 @@ export default CaptureButton
 const styles = StyleSheet.create({
   button: {
     backgroundColor: '#2075CA',
-    padding: 20,
+    padding: 25,
     borderRadius: 25,
   }
 })
