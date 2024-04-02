@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    flex: 0.8,
+    flex: 0.95,
   },
   text: {
     fontWeight: "bold",

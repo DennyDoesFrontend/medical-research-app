@@ -5,15 +5,48 @@ import {
   StyleSheet,
   ScrollView,
   Button,
+  BackHandler
 } from "react-native";
 import React from "react";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
+import { useNavigation, useFocusEffect, CommonActions } from "@react-navigation/native"; // Import useNavigation hook
 import Post from "../components/Post";
 import Navigation from "../components/navigation";
 import Profile from "../components/Profile";
 
+import NavigationService from "../services/RootNavigation";
+
 function Home(props) {
   const navigation = useNavigation(); // Initialize navigation using useNavigation hook
+
+  useFocusEffect(
+    React.useCallback(() => {
+
+      const routes = navigation.getState()?.routes
+      const previousRoute = routes[routes.length - 2]?.name
+
+      const onBackPress = () => {
+        if (previousRoute === 'camera') {
+          const handleCameraResetNav = () => {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [
+                  { name: "camera" }
+                ],
+              })
+            )
+          }
+          handleCameraResetNav()
+          return true
+        }
+        return false
+      }
+
+      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress)
+
+      return () => subscription.remove()
+    },[])
+  )
 
   return (
     <View style={styles.mainContainer}>
