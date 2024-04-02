@@ -10,8 +10,12 @@ import {
   BackHandler,
 } from "react-native";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import Navigation from "../components/navigation";
-import { useFocusEffect, useNavigation, useRoute, CommonActions } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+  CommonActions,
+} from "@react-navigation/native";
 
 const Chatbot = () => {
   const [chatHistory, setChatHistory] = useState([]);
@@ -30,34 +34,33 @@ const Chatbot = () => {
       const genAI = new GoogleGenerativeAI(API_KEY);
       startChat(genAI);
 
-      const routes = navigation.getState()?.routes
-      const previousRoute = routes[routes.length - 2]?.name
+      const routes = navigation.getState()?.routes;
+      const previousRoute = routes[routes.length - 2]?.name;
 
       const onBackPress = () => {
-        if (previousRoute === 'camera') {
+        if (previousRoute === "camera") {
           const handleCameraResetNav = () => {
             navigation.dispatch(
               CommonActions.reset({
                 index: 0,
-                routes: [
-                  { name: "camera" }
-                ],
+                routes: [{ name: "camera" }],
               })
-            )
-          }
-          handleCameraResetNav()
-          return true
+            );
+          };
+          handleCameraResetNav();
+          return true;
         }
-        return false
-      }
+        return false;
+      };
 
-      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress)
+      const subscription = BackHandler.addEventListener(
+        "hardwareBackPress",
+        onBackPress
+      );
 
-      return () => subscription.remove()
-    },[])
-  )
-
-
+      return () => subscription.remove();
+    }, [])
+  );
 
   const startChat = async (genAI) => {
     try {

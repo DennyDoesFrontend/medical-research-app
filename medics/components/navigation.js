@@ -21,13 +21,13 @@ function Navigation() {
       >
         <Feather name="home" size={24} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={handleReset}
-        style={styles.iconContainer}
-      >
+      <TouchableOpacity onPress={handleReset} style={styles.iconContainer}>
         <Feather name="camera" size={24} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.iconContainer}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Map")}
+        style={styles.iconContainer}
+      >
         <Feather name="map-pin" size={24} color="black" />
       </TouchableOpacity>
       <TouchableOpacity

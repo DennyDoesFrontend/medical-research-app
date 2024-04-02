@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    height: 100,
+    paddingTop: StatusBar.currentHeight === 0 ? StatusBar.currentHeight : 20,
   },
   text: {
     color: "white",
@@ -46,9 +47,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
+    paddingTop: 10,
   },
   iconContainer: {
     flexDirection: "row",
     gap: 20,
+    alignItems: "center",
   },
 });
