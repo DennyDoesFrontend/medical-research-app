@@ -1,24 +1,19 @@
-import {
-  Text,
-  View,
-  ScrollView,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 
 function Post({ imgSource, title, description }) {
+  const navigation = useNavigation(); // Call useNavigation() to get the navigation object
+
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={imgSource}></Image>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("More")}
+        style={styles.button}
+      >
         <Text>Read More</Text>
       </TouchableOpacity>
     </View>
@@ -37,6 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginHorizontal: 3,
     marginTop: 5,
+    gap: 5,
   },
   image: {
     width: "100%",

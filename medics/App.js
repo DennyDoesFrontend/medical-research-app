@@ -10,6 +10,7 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import NavigationService, { navigationRef } from "./services/RootNavigation";
 import Chatbot from "./pages/Chatbot";
 import React from "react";
+import More from "./pages/more";
 
 const stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ export default function App() {
         <stack.Screen name="home" component={Home}></stack.Screen>
         <stack.Screen name="camera" component={CameraScreen}></stack.Screen>
         <stack.Screen name="Map" component={Map}></stack.Screen>
+        <stack.Screen name="More" component={More}></stack.Screen>
         <stack.Screen
           name="Chat"
           component={Chatbot}

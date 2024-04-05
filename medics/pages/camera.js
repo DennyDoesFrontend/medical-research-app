@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Camera } from "expo-camera";
 import { StatusBar } from "expo-status-bar";
-// import { useNavigation } from "@react-navigation/native";
-import { useFocusEffect  } from "@react-navigation/native";
 
 import { CaptureButton, FlashButton, ImagePreview } from "../components/Camera";
 import Navigation from "../components/navigation";
@@ -14,7 +12,6 @@ function CameraScreen() {
   const [image, setImage] = useState(null);
   const cameraRef = useRef(null);
 
-  
   useEffect(() => {
     (async () => {
       await requestPermission();
@@ -33,7 +30,7 @@ function CameraScreen() {
     if (!cameraRef) return console.log("Camera ref not found");
 
     if (!cameraRef.current) return console.log("Camera ref not found");
-    
+
     if (cameraRef) {
       try {
         const data = await cameraRef.current.takePictureAsync();
@@ -74,7 +71,7 @@ function CameraScreen() {
   return (
     <>
       <View style={styles.container}>
-      <StatusBar style="light" />
+        <StatusBar style="light" />
         {!image ? (
           <>
             <View style={styles.cameraContainer}>
