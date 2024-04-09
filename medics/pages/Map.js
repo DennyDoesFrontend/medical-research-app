@@ -1,84 +1,79 @@
-import React, { useState, useEffect } from "react";
-import MapView, { Circle } from "react-native-maps";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import Profile from "../components/Profile";
-import Search from "../components/Search";
+import Mapbox, { MarkerView } from "@rnmapbox/maps";
 import Information from "../components/Information";
+import Search from "../components/Search";
+Mapbox.setAccessToken(
+  "pk.eyJ1IjoiZGVubnk5OW9naHdpdWZoZXciLCJhIjoiY2x1cW5qZXhiMDAzNjJtbzJtbzh6OGZwaCJ9.gHAHnqHn23bhwCImhSn3Zg"
+);
 
-// Function to generate random latitude and longitude within the bounds of the Ashanti Region
-const generateRandomLocation = () => {
-  // Bounds of the Ashanti Region
-  const minLat = 6.0;
-  const maxLat = 7.0;
-  const minLong = -2.0;
-  const maxLong = -1.0;
+const Map = () => {
+  const [calloutVisible, setCalloutVisible] = useState(false);
+  const [coordinates] = useState([-1.0232, 7.9465]); // Coordinates for Ghana
 
-  // Generate random latitude and longitude
-  const latitude = Math.random() * (maxLat - minLat) + minLat;
-  const longitude = Math.random() * (maxLong - minLong) + minLong;
+  const onMarkerPress = () => {
+    setCalloutVisible(true);
+  };
 
-  return { latitude, longitude };
-};
+  const loadAnnotationGhana = () => {
+    return (
+      <Mapbox.PointAnnotation
+        key="annotationGhana"
+        id="annotationGhana"
+        coordinate={coordinates}
+        onSelected={onMarkerPress}
+      >
+        {/* Use MarkerView with background color */}
+        <MarkerView
+          coordinate={coordinates}
+          style={[styles.marker, { backgroundColor: "palevioletred" }]}
+          onPress={onMarkerPress}
+        />
+        {/* End of MarkerView */}
 
-export default function Map() {
-  const [circles, setCircles] = useState([]);
-
-  useEffect(() => {
-    // Generate 20 random circles across the Ashanti Region
-    const newCircles = Array.from({ length: 20 }, (_, index) => {
-      const { latitude, longitude } = generateRandomLocation();
-      const radius = Math.random() * 3000 + 1000; // Random radius between 1000 and 4000 meters
-      const fillColor =
-        index % 3 === 0
-          ? "rgba(255, 0, 0, 0.5)"
-          : index % 3 === 1
-          ? "rgba(255, 255, 0, 0.5)"
-          : "rgba(0, 255, 0, 0.5)"; // Red, Yellow, Green colors
-
-      return { latitude, longitude, radius, fillColor };
-    });
-
-    setCircles(newCircles);
-  }, []);
+        <Mapbox.Callout
+          title="Welcome to Ghana!"
+          contentStyle={{ borderRadius: 5 }}
+        ></Mapbox.Callout>
+      </Mapbox.PointAnnotation>
+    );
+  };
 
   return (
-    <View style={styles.container}>
-      <Profile />
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: 6.5,
-          longitude: -1.5,
-          latitudeDelta: 1.5, // Adjust the initial zoom level as needed
-          longitudeDelta: 1.5, // Adjust the initial zoom level as needed
-        }}
-      >
-        {circles.map((circle, index) => (
-          <Circle
-            key={index}
-            center={{ latitude: circle.latitude, longitude: circle.longitude }}
-            radius={circle.radius} // radius in meters
-            fillColor={circle.fillColor} // Circle color
-          />
-        ))}
-      </MapView>
+    <View style={styles.page}>
+      <View style={styles.container}>
+        <Mapbox.MapView style={styles.map}>
+          <Mapbox.Camera zoomLevel={6} centerCoordinate={coordinates} />
 
+          <Mapbox.PointAnnotation id="ghana" coordinate={coordinates} />
+
+          <View>{loadAnnotationGhana()}</View>
+        </Mapbox.MapView>
+      </View>
       <Search />
       <Information />
     </View>
   );
-}
+};
+
+export default Map;
 
 const styles = StyleSheet.create({
-  container: {
+  page: {
     flex: 1,
-    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  container: {
+    height: "100%",
+    width: "100%",
   },
   map: {
-    position: "absolute",
-    zIndex: -1,
-    width: "100%",
-    height: "100%",
+    flex: 1,
+  },
+  marker: {
+    height: 40,
+    width: 40,
+    borderRadius: 20, // Make it round
   },
 });
-``;

@@ -14,6 +14,15 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsImpl": "mapbox",
+          "RNMapboxMapsDownloadToken": "sk.eyJ1IjoiZGVubnk5OW9naHdpdWZoZXciLCJhIjoiY2x1cXUwb2oxMDA1MjJpbjBtcW1rbXppcSJ9._22wmaXRJcI4gSD-9Zb3pA"
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true
     },

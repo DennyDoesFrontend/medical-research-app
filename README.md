@@ -1,2 +1,3 @@
 # medical-research-app
-Coming soon...
+
+Medical Research App Prototype
