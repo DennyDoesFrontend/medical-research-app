@@ -1,8 +1,15 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, BackHandler } from "react-native";
 import Mapbox, { MarkerView } from "@rnmapbox/maps";
 import Information from "../components/Information";
 import Search from "../components/Search";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+  CommonActions,
+} from "@react-navigation/native";
+
 Mapbox.setAccessToken(
   "pk.eyJ1IjoiZGVubnk5OW9naHdpdWZoZXciLCJhIjoiY2x1cW5qZXhiMDAzNjJtbzJtbzh6OGZwaCJ9.gHAHnqHn23bhwCImhSn3Zg"
 );
@@ -10,6 +17,39 @@ Mapbox.setAccessToken(
 const Map = () => {
   const [calloutVisible, setCalloutVisible] = useState(false);
   const [coordinates] = useState([-1.0232, 7.9465]); // Coordinates for Ghana
+
+  const navigation = useNavigation();
+
+  useFocusEffect(
+    React.useCallback(() => {
+
+      const routes = navigation.getState()?.routes;
+      const previousRoute = routes[routes.length - 2]?.name;
+
+      const onBackPress = () => {
+        if (previousRoute === "camera") {
+          const handleCameraResetNav = () => {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: "camera" }],
+              })
+            );
+          };
+          handleCameraResetNav();
+          return true;
+        }
+        return false;
+      };
+
+      const subscription = BackHandler.addEventListener(
+        "hardwareBackPress",
+        onBackPress
+      );
+
+      return () => subscription.remove();
+    }, [])
+  );
 
   const onMarkerPress = () => {
     setCalloutVisible(true);
