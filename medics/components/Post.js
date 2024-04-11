@@ -2,7 +2,7 @@ import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 
-function Post({ imgSource, title, description }) {
+function Post({ imgSource, title, description, navigateHere }) {
   const navigation = useNavigation(); // Call useNavigation() to get the navigation object
 
   return (
@@ -11,7 +11,7 @@ function Post({ imgSource, title, description }) {
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate("More")}
+        onPress={() => navigation.navigate(navigateHere)}
         style={styles.button}
       >
         <Text>Read More</Text>

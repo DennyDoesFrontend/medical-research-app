@@ -1,5 +1,6 @@
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { FontAwesome6 } from "@expo/vector-icons";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
@@ -36,6 +37,12 @@ function Navigation() {
       >
         <Feather name="message-circle" size={24} color="black" />
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={() => navigation.navigate("Doctors")}
+      >
+        <FontAwesome6 name="user-doctor" size={24} color="black" />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -54,7 +61,6 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0, // Adjust to fill the entire width
     alignItems: "center",
-    paddingHorizontal: 20, // Add horizontal padding to adjust spacing
   },
   iconContainer: {
     alignItems: "center",

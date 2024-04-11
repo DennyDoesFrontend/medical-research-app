@@ -11,6 +11,8 @@ import NavigationService, { navigationRef } from "./services/RootNavigation";
 import Chatbot from "./pages/Chatbot";
 import React from "react";
 import More from "./pages/more";
+import Doctors from "./pages/Doctors";
+import MedicsInfo from "./pages/medicsInfo";
 
 const stack = createNativeStackNavigator();
 
@@ -33,6 +35,8 @@ export default function App() {
         <stack.Screen name="camera" component={CameraScreen}></stack.Screen>
         <stack.Screen name="Map" component={Map}></stack.Screen>
         <stack.Screen name="More" component={More}></stack.Screen>
+        <stack.Screen name="Doctors" component={Doctors}></stack.Screen>
+        <stack.Screen name="Medics" component={MedicsInfo}></stack.Screen>
         <stack.Screen
           name="Chat"
           component={Chatbot}

@@ -16,6 +16,7 @@ import {
   useRoute,
   CommonActions,
 } from "@react-navigation/native";
+import { Snackbar } from "react-native-paper";
 
 const Chatbot = () => {
   const [chatHistory, setChatHistory] = useState([]);
@@ -23,7 +24,7 @@ const Chatbot = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [chat, setChat] = useState(null);
-  const API_KEY = "AIzaSyDCAVSpcvM75-s__HJEprLcroXV2KCpcTU";
+  const API_KEY = "AIzaSyAyCVbeWfI8dI4xAxzZRc4xx5ZgzqtC0os";
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -62,6 +63,7 @@ const Chatbot = () => {
     }, [])
   );
 
+  // Inside startChat function
   const startChat = async (genAI) => {
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
@@ -87,53 +89,80 @@ const Chatbot = () => {
         },
       });
 
-      // Save the chat instance to state here
+      // Update chat instance in state here
       setChat(chatInstance);
+
+      return chatInstance; // Return the chat instance
     } catch (error) {
       console.error("Error starting chat:", error);
       setErrorMessage("An error occurred while starting the chat.");
+      return null; // Return null if chat instance initialization fails
     }
   };
 
+  // Inside sendMessage function
   const sendMessage = async (message) => {
     try {
       setLoading(true);
 
-      // Send user message with a timeout, Reply 'Timeout...' when model doesn't respond
-      const result = await Promise.race([
-        chat.sendMessage(message),
-        new Promise(
-          (_, reject) =>
-            setTimeout(
-              () => reject(new Error("Timeout while waiting for response")),
-              10000
-            ) // 10-second timeout here XD
-        ),
-      ]);
-
-      const response = await result.response;
-      const modelResponse = response.text();
-
-      // Check if modelResponse is empty
-      if (modelResponse.trim() === "") {
-        throw new Error("No response from the AI.");
+      // Check if chat instance is available
+      if (!chat) {
+        const genAI = new GoogleGenerativeAI(API_KEY);
+        const chatInstance = await startChat(genAI);
+        if (!chatInstance)
+          throw new Error("Failed to initialize chat instance.");
+        // Set the chat instance obtained from startChat
+        setChat(chatInstance);
       }
 
-      // Update chat history with user message and model response
-      setChatHistory((prevChatHistory) => [
-        ...prevChatHistory,
-        { role: "user", text: message },
-        { role: "model", text: modelResponse },
-      ]);
+      // Ensure chat instance is not null before sending message
+      if (chat) {
+        // Send user message with a timeout, Reply 'Timeout...' when model doesn't respond
+        const result = await Promise.race([
+          chat.sendMessage(message),
+          new Promise(
+            (_, reject) =>
+              setTimeout(
+                () => reject(new Error("Timeout while waiting for response")),
+                10000
+              ) // 10-second timeout here XD
+          ),
+        ]);
 
-      setLoading(false);
+        const response = await result.response;
+        const modelResponse = response.text();
+
+        // Check if modelResponse is empty
+        if (modelResponse.trim() === "") {
+          throw new Error("No response from the AI.");
+        }
+
+        // Update chat history with user message and model response
+        setChatHistory((prevChatHistory) => [
+          ...prevChatHistory,
+          { role: "user", text: message },
+          { role: "model", text: modelResponse },
+        ]);
+
+        setLoading(false);
+      } else {
+        // If chat is null, log an error
+        throw new Error("Chat instance is not initialized.");
+      }
     } catch (error) {
       console.error("Error sending message:", error);
-      setErrorMessage("An error occurred while sending the message.");
+      if (
+        error.message === "Timeout while waiting for response" ||
+        error.message === "No response from the AI."
+      ) {
+        // Reset chat if there is a timeout or no response from the AI
+        setChat(null);
+      } else {
+        setErrorMessage("An error occurred while sending the message.");
+      }
       setLoading(false);
     }
   };
-
   const renderChatItem = ({ item }) => {
     return (
       <View

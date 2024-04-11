@@ -53,19 +53,22 @@ function Home(props) {
       <Profile />
       <ScrollView style={styles.container}>
         <Post
-          title="Malaria Outbreak kills 200"
-          description="Malaria outbreak takes the life of 200 children in ..."
-          imgSource={require("../assets/srcImages/malaria.jpg")}
+          title="Medical Research Analysis for Malaria"
+          description="Malaria is one of the major six killer diseases in G..."
+          imgSource={require("../assets/srcImages/medics.jpg")}
+          navigateHere="Medics"
         />
         <Post
           title="Malaria Outbreak kills 200"
           description="Malaria outbreak takes the life of 200 children in ..."
           imgSource={require("../assets/srcImages/ghana.jpg")}
+          navigateHere="Map"
         />
         <Post
           title="Malaria Outbreak kills 200"
           description="Malaria outbreak takes the life of 200 children in ..."
           imgSource={require("../assets/srcImages/malaria.jpg")}
+          navigateHere="More"
         />
         <Button
           title="Go to About"
