@@ -21,11 +21,24 @@ function Doctors(props) {
   // Optionally handle back press events or other focus-related effects
   useFocusEffect(
     React.useCallback(() => {
+
+      const routes = navigation.getState()?.routes;
+      const previousRoute = routes[routes.length - 2]?.name;
+
       const onBackPress = () => {
-        // Define your back press logic here
-        // For example:
-        // navigation.goBack();
-        return false; // Return true to indicate that the back press is handled, false otherwise
+        if (previousRoute === "camera") {
+          const handleCameraResetNav = () => {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: "camera" }],
+              })
+            );
+          };
+          handleCameraResetNav();
+          return true;
+        }
+        return false;
       };
 
       const subscription = BackHandler.addEventListener(
